@@ -2,12 +2,16 @@
 #include <vector>
 #include <string>
 #include <cstdlib>
+#include <cctype>
 
-void drawMaze(const std::vector<std::string>& maze) {
-    std::system("cls");
+void drawMaze(const std::vector<std::string>& maze, int score, int totalDots) {
+    std::cout << "\n=== Tiny Pac-Man ===\n";
     for (int row = 0; row < maze.size(); row++) {
         std::cout << maze[row] << '\n';
     }
+    std::cout << "Use n e s w. Press q to quit.\n";
+    std::cout << "Score: " << score << " / " << totalDots << "\n";
+    std::cout.flush();
 }
 
 int main() {
@@ -29,9 +33,7 @@ int main() {
         }
     }
 
-    drawMaze(maze);
-    std::cout << "Collect all dots (*) using n e s w. Press Q to quit.\n";
-    std::cout << "Score: " << score << " / " << totalDots << "\n";
+    drawMaze(maze, score, totalDots);
 
     while (true) {
         char move;
@@ -51,16 +53,14 @@ int main() {
         else continue;
 
         if (nextRow < 0 || nextRow >= maze.size() || nextCol < 0 || nextCol >= maze[nextRow].size()) {
-            drawMaze(maze);
+            drawMaze(maze, score, totalDots);
             std::cout << "Cannot move outside the maze! Use n e s w.\n";
-            std::cout << "Score: " << score << " / " << totalDots << "\n";
             continue;
         }
 
         if (maze[nextRow][nextCol] == '|') {
-            drawMaze(maze);
+            drawMaze(maze, score, totalDots);
             std::cout << "Hit a wall! Use n e s w.\n";
-            std::cout << "Score: " << score << " / " << totalDots << "\n";
             continue;
         }
 
@@ -73,9 +73,7 @@ int main() {
         playerCol = nextCol;
         maze[playerRow][playerCol] = 'P';
 
-        drawMaze(maze);
-        std::cout << "Collect all dots (*) using n e s w. Press Q to quit.\n";
-        std::cout << "Score: " << score << " / " << totalDots << "\n";
+        drawMaze(maze, score, totalDots);
 
         if (score == totalDots) {
             std::cout << "You win! All dots collected.\n";
